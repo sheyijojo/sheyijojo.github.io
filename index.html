@@ -8,23 +8,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Overpass+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0C2B4D;--panel:#0F3560;--ink:#EAF3FB;--mist:#A9C4DD;--chalk:#F6D55C;--line:rgba(234,243,251,.7);--soft:rgba(234,243,251,.35)}
+:root{--bg:#F1EEE4;--panel:#F8F6EF;--ink:#14202E;--mist:#55627A;--chalk:#F6D55C;--acc:#1B5FA8;--line:rgba(20,32,46,.6);--soft:rgba(20,32,46,.28)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;color:var(--ink);font-family:"Barlow",system-ui,sans-serif;font-size:18px;line-height:1.45;background-color:var(--bg);
-background-image:linear-gradient(rgba(234,243,251,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(234,243,251,.16) 1px,transparent 1px),linear-gradient(rgba(234,243,251,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(234,243,251,.06) 1px,transparent 1px);
+background-image:linear-gradient(rgba(20,32,46,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(20,32,46,.09) 1px,transparent 1px),linear-gradient(rgba(20,32,46,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(20,32,46,.04) 1px,transparent 1px);
 background-size:100px 100px,100px 100px,20px 20px,20px 20px}
 a{color:var(--ink)}
-a:focus-visible,button:focus-visible{outline:3px solid var(--chalk);outline-offset:2px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 h1,h2,h3,p{margin:0}
 .wrap{max-width:1200px;margin:0 auto;padding:0 max(20px,env(safe-area-inset-left))}
 .lab{font:500 12px/1.3 "Overpass Mono",ui-monospace,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
 .nl{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font:500 13px/1 "Overpass Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
-.nl:hover{color:var(--chalk)}
+.nl:hover{color:var(--acc)}
 .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 20px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:500 14px/1 "Overpass Mono",ui-monospace,monospace;letter-spacing:.06em;text-decoration:none;text-transform:uppercase}
 .btn:hover{background:var(--ink);color:var(--bg)}
-.btn.pri{background:var(--chalk);border-color:var(--chalk);color:var(--bg)}
-.btn.pri:hover{background:var(--ink);border-color:var(--ink)}
+.btn.pri{background:var(--chalk);border-color:var(--ink);color:var(--ink)}
+.btn.pri:hover{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 header.wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 24px;padding-top:12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
 .brand{display:inline-flex;flex-wrap:wrap;align-items:center;gap:0 14px;min-height:44px;text-decoration:none}
 .brand b{font:600 28px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
@@ -42,27 +42,27 @@ section.blk{display:flex;flex-direction:column;gap:16px;padding-bottom:56px}
 .layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:8px}
 .col{display:flex;flex-direction:column;justify-content:space-between;gap:16px;min-height:132px;padding:14px 16px;border:1px solid var(--line);background:var(--panel);color:var(--ink);text-align:left;font:inherit;cursor:pointer}
 .col .nm{font:600 32px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase}
-.col:hover{border-color:var(--chalk)}
-.col[aria-pressed="true"]{background:var(--chalk);border-color:var(--chalk);color:var(--bg)}
-.col[aria-pressed="true"] .lab{color:var(--bg)}
+.col:hover{border-color:var(--acc)}
+.col[aria-pressed="true"]{background:var(--chalk);border-color:var(--ink);color:var(--ink)}
+.col[aria-pressed="true"] .lab{color:var(--ink)}
 .concerns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));border:1px solid var(--line);background:var(--panel)}
 .concerns span{display:flex;align-items:center;min-height:44px;padding:0 14px;border-right:1px solid var(--soft)}
 .cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:8px}
 .case{display:flex;align-items:center;gap:14px;min-height:48px;padding:6px 14px;text-decoration:none;border:1px solid var(--soft);background:var(--panel);font-size:18px}
-.case:hover{border-color:var(--chalk)}
-.case .n{font:600 13px/1 "Overpass Mono",ui-monospace,monospace;color:var(--chalk);width:24px;flex:none}
+.case:hover{border-color:var(--acc)}
+.case .n{font:600 13px/1 "Overpass Mono",ui-monospace,monospace;color:var(--acc);width:24px;flex:none}
 .stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(460px,100%),1fr));gap:24px}
 .frame{padding:6px;border:1px solid var(--line);background:var(--bg)}
 .frame .in{display:flex;flex-direction:column;gap:16px;padding:20px;height:100%;border:1px solid var(--line);background:var(--panel)}
 .frame h3{font:600 36px/1.02 "Barlow Condensed",sans-serif;letter-spacing:.01em}
 .frame h3 a{text-decoration:none}
-.frame h3 a:hover{color:var(--chalk)}
+.frame h3 a:hover{color:var(--acc)}
 .frame .sum{font-size:17px}
 .spec{display:flex;flex-direction:column}
 .spec div{display:grid;grid-template-columns:90px 1fr;border:1px solid var(--line);margin-top:-1px}
 .spec span{padding:9px 12px}
 .spec span:first-child{border-right:1px solid var(--line);display:flex;align-items:center}
-.spec .hi{color:var(--chalk);font-weight:600}
+.spec .hi{color:var(--acc);font-weight:600}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:12px}
 .pan{padding:20px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .pan ol{margin:0;padding-left:20px}
@@ -102,7 +102,7 @@ footer.wrap{padding-top:20px;padding-bottom:40px;border-top:1px solid var(--line
     <div class="layers" id="layers"></div>
     <div class="concerns"><span class="lab" style="color:var(--ink)">Security</span><span class="lab" style="color:var(--ink)">Observability</span><span class="lab" style="color:var(--ink)">Reliability</span><span class="lab" style="color:var(--ink)">Cost</span></div>
     <p class="lab">Four concerns cut across every layer</p>
-    <p class="lab" id="sel" style="color:var(--chalk);margin-top:8px" aria-live="polite"></p>
+    <p class="lab" id="sel" style="color:var(--acc);margin-top:8px" aria-live="polite"></p>
     <div class="cases" id="cases"></div>
   </section>
 
