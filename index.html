@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>John Gaji</title>
+<meta name="description" content="Cloud and platform engineer. Case studies and notes on secure, reliable platforms.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Overpass+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0C2B4D;--panel:#0F3560;--ink:#EAF3FB;--mist:#A9C4DD;--chalk:#F6D55C;--line:rgba(234,243,251,.7);--soft:rgba(234,243,251,.35)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Barlow",system-ui,sans-serif;font-size:18px;line-height:1.45;background-color:var(--bg);
+background-image:linear-gradient(rgba(234,243,251,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(234,243,251,.16) 1px,transparent 1px),linear-gradient(rgba(234,243,251,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(234,243,251,.06) 1px,transparent 1px);
+background-size:100px 100px,100px 100px,20px 20px,20px 20px}
+a{color:var(--ink)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--chalk);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 max(20px,env(safe-area-inset-left))}
+.lab{font:500 12px/1.3 "Overpass Mono",ui-monospace,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+.nl{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font:500 13px/1 "Overpass Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.nl:hover{color:var(--chalk)}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 20px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:500 14px/1 "Overpass Mono",ui-monospace,monospace;letter-spacing:.06em;text-decoration:none;text-transform:uppercase}
+.btn:hover{background:var(--ink);color:var(--bg)}
+.btn.pri{background:var(--chalk);border-color:var(--chalk);color:var(--bg)}
+.btn.pri:hover{background:var(--ink);border-color:var(--ink)}
+header.wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 24px;padding-top:12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.brand{display:inline-flex;flex-wrap:wrap;align-items:center;gap:0 14px;min-height:44px;text-decoration:none}
+.brand b{font:600 28px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+nav{display:flex;flex-wrap:wrap}
+h1{max-width:960px;font:600 clamp(42px,8vw,72px)/1 "Barlow Condensed",sans-serif;letter-spacing:.005em;text-wrap:balance}
+.hero{display:flex;flex-direction:column;gap:32px;padding:56px 0 40px}
+.dims{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:20px 32px}
+.dim{display:flex;align-items:center;gap:10px}
+.dim .tk{flex:none;width:1px;height:18px;background:var(--ink)}
+.dim .ln{flex:1;min-width:16px;height:1px;background:var(--line)}
+.dim .dl{flex:none;max-width:70%;text-align:center;font:500 13px/1.3 "Overpass Mono",ui-monospace,monospace;letter-spacing:.04em}
+.row2{display:flex;flex-wrap:wrap;gap:12px}
+section.blk{display:flex;flex-direction:column;gap:16px;padding-bottom:56px}
+.head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 16px}
+.layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:8px}
+.col{display:flex;flex-direction:column;justify-content:space-between;gap:16px;min-height:132px;padding:14px 16px;border:1px solid var(--line);background:var(--panel);color:var(--ink);text-align:left;font:inherit;cursor:pointer}
+.col .nm{font:600 32px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase}
+.col:hover{border-color:var(--chalk)}
+.col[aria-pressed="true"]{background:var(--chalk);border-color:var(--chalk);color:var(--bg)}
+.col[aria-pressed="true"] .lab{color:var(--bg)}
+.concerns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));border:1px solid var(--line);background:var(--panel)}
+.concerns span{display:flex;align-items:center;min-height:44px;padding:0 14px;border-right:1px solid var(--soft)}
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:8px}
+.case{display:flex;align-items:center;gap:14px;min-height:48px;padding:6px 14px;text-decoration:none;border:1px solid var(--soft);background:var(--panel);font-size:18px}
+.case:hover{border-color:var(--chalk)}
+.case .n{font:600 13px/1 "Overpass Mono",ui-monospace,monospace;color:var(--chalk);width:24px;flex:none}
+.stories{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(460px,100%),1fr));gap:24px}
+.frame{padding:6px;border:1px solid var(--line);background:var(--bg)}
+.frame .in{display:flex;flex-direction:column;gap:16px;padding:20px;height:100%;border:1px solid var(--line);background:var(--panel)}
+.frame h3{font:600 36px/1.02 "Barlow Condensed",sans-serif;letter-spacing:.01em}
+.frame h3 a{text-decoration:none}
+.frame h3 a:hover{color:var(--chalk)}
+.frame .sum{font-size:17px}
+.spec{display:flex;flex-direction:column}
+.spec div{display:grid;grid-template-columns:90px 1fr;border:1px solid var(--line);margin-top:-1px}
+.spec span{padding:9px 12px}
+.spec span:first-child{border-right:1px solid var(--line);display:flex;align-items:center}
+.spec .hi{color:var(--chalk);font-weight:600}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:12px}
+.pan{padding:20px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.pan ol{margin:0;padding-left:20px}
+footer.wrap{padding-top:20px;padding-bottom:40px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+@media (prefers-reduced-motion:no-preference){.col,.case,.btn,.nl{transition:background-color .15s,color .15s,border-color .15s}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <a class="brand" href="#top"><b>John Gaji</b><span class="lab">Cloud and platform engineer</span></a>
+  <nav aria-label="Primary">
+    <a class="nl" href="#map">Layer map</a>
+    <a class="nl" href="#stories">Case studies</a>
+    <a class="nl" href="#how">How I work</a>
+    <a class="nl" href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main class="wrap" id="top">
+  <section class="hero">
+    <p class="lab">Summary</p>
+    <h1>I build secure, reliable cloud platforms, then write down how I solved the hard parts.</h1>
+    <div class="dims">
+      <div class="dim"><span class="tk"></span><span class="ln"></span><span class="dl">50 AWS accounts / one Terraform platform</span><span class="ln"></span><span class="tk"></span></div>
+      <div class="dim"><span class="tk"></span><span class="ln"></span><span class="dl">~1,800 resources imported / zero outages</span><span class="ln"></span><span class="tk"></span></div>
+      <div class="dim"><span class="tk"></span><span class="ln"></span><span class="dl">5+ years / AWS and Azure</span><span class="ln"></span><span class="tk"></span></div>
+    </div>
+    <div class="row2">
+      <a class="btn pri" href="#map">Open the layer map</a>
+      <a class="btn" href="https://github.com/sheyijojo/engineering-notes" target="_blank" rel="noopener">All notes on GitHub</a>
+    </div>
+  </section>
+
+  <section id="map" class="blk">
+    <div class="head"><p class="lab" style="color:var(--ink)">Layer map</p><p class="lab">Pick a layer to see its case studies</p></div>
+    <div class="layers" id="layers"></div>
+    <div class="concerns"><span class="lab" style="color:var(--ink)">Security</span><span class="lab" style="color:var(--ink)">Observability</span><span class="lab" style="color:var(--ink)">Reliability</span><span class="lab" style="color:var(--ink)">Cost</span></div>
+    <p class="lab">Four concerns cut across every layer</p>
+    <p class="lab" id="sel" style="color:var(--chalk);margin-top:8px" aria-live="polite"></p>
+    <div class="cases" id="cases"></div>
+  </section>
+
+  <section id="stories" class="blk">
+    <div class="head"><p class="lab" style="color:var(--ink)">Case studies</p><a class="btn" href="https://github.com/sheyijojo/engineering-notes" target="_blank" rel="noopener">All six on GitHub</a></div>
+    <div class="stories" id="storyGrid"></div>
+  </section>
+
+  <section id="how" class="blk">
+    <p class="lab" style="color:var(--ink)">How I work</p>
+    <div class="steps">
+      <div class="pan"><b>Every story has five beats</b>
+        <ol><li>Problem</li><li>Layer</li><li>Decisions</li><li>Result</li><li>Next step</li></ol></div>
+      <div class="pan"><b>Every system has five layers and four concerns</b>
+        <p>Foundation, data, compute, ingress, delivery.</p>
+        <p>Security, observability, reliability, cost.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap" id="contact">
+  <p class="lab">Case studies are generalized. No client or employer identifiers.</p>
+  <p class="lab"><a href="https://github.com/sheyijojo" target="_blank" rel="noopener">github.com/sheyijojo</a></p>
+</footer>
+
+<script>
+var BASE='https://github.com/sheyijojo/engineering-notes/tree/main/';
+var cases=[
+{n:'01',slug:'terraform-import-live-aws-estate',tag:'Foundation / Delivery',title:'Console-built AWS under Terraform',sum:'Imported hand-built resources with no downtime, using import blocks and a zero-diff plan.',layer:'Foundation, delivery',tools:'Terraform, GitHub Actions',num:'About 1,800 resources, zero outages'},
+{n:'02',slug:'production-api-that-hung',tag:'Compute / Observability',title:'The production API that hung',sum:'Finding why one task kept stalling requests, and what changed afterward.',layer:'Compute',tools:'ECS, CloudWatch',num:'308 of 447 requests took 20 s or more'},
+{n:'03',slug:'least-privilege-without-slowing-teams',tag:'Foundation / Identity',title:'From standing access to least privilege',sum:'Reworking who can do what without slowing teams down.',layer:'Foundation',tools:'IAM, Identity Center',num:''},
+{n:'04',slug:'keyless-pipelines-github-actions-oidc',tag:'Delivery',title:'Keyless, standard pipelines',sum:'One standard pipeline shape, no stored cloud keys.',layer:'Delivery',tools:'GitHub Actions, OIDC, Terraform',num:''},
+{n:'05',slug:'governing-268-noncompliant-resources',tag:'Foundation / Observability',title:'Org-wide governance and findings',sum:'Triaging what the organization-wide checks found.',layer:'Foundation',tools:'Security Hub, Config',num:'268 non-compliant resources triaged'},
+{n:'06',slug:'private-developer-environment',tag:'All five layers',title:'A private dev environment, layer by layer',sum:'One environment, built from foundation to delivery.',layer:'All five layers',tools:'Terraform, ECS, ALB, VPN',num:''}
+];
+var layers=[
+{k:'Foundation',ix:'L1',c:['01','03','05','06']},
+{k:'Data',ix:'L2',c:['06']},
+{k:'Compute',ix:'L3',c:['02','06']},
+{k:'Ingress',ix:'L4',c:['06']},
+{k:'Delivery',ix:'L5',c:['01','04','06']}
+];
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!==undefined)e.textContent=h;return e}
+var lw=document.getElementById('layers'),cw=document.getElementById('cases'),sel=document.getElementById('sel');
+function pick(i){
+  var L=layers[i];
+  Array.prototype.forEach.call(lw.children,function(b,j){b.setAttribute('aria-pressed',j===i?'true':'false')});
+  sel.textContent=L.ix+' '+L.k+' / '+L.c.length+(L.c.length===1?' case study':' case studies');
+  cw.textContent='';
+  L.c.forEach(function(n){
+    var c=cases.filter(function(x){return x.n===n})[0];
+    var a=el('a','case');a.href=BASE+c.slug;a.target='_blank';a.rel='noopener';
+    a.appendChild(el('span','n',c.n));a.appendChild(el('span','',c.title));cw.appendChild(a);
+  });
+}
+layers.forEach(function(L,i){
+  var b=el('button','col');b.type='button';b.setAttribute('aria-pressed','false');
+  b.appendChild(el('span','lab',L.ix));b.appendChild(el('span','nm',L.k));
+  b.appendChild(el('span','lab',L.c.length+(L.c.length===1?' case':' cases')));
+  b.onclick=function(){pick(i)};lw.appendChild(b);
+});
+pick(0);
+var sg=document.getElementById('storyGrid');
+cases.forEach(function(c){
+  var f=el('article','frame'),i=el('div','in');
+  var top=el('div','head');top.appendChild(el('span','lab','Case '+c.n));top.appendChild(el('span','lab',c.tag));
+  i.appendChild(top);
+  var h=el('h3');var a=el('a','',c.title);a.href=BASE+c.slug;a.target='_blank';a.rel='noopener';h.appendChild(a);i.appendChild(h);
+  i.appendChild(el('p','sum',c.sum));
+  var sp=el('div','spec');
+  [['Layer',c.layer],['Tools',c.tools]].concat(c.num?[['Number',c.num,1]]:[]).forEach(function(r){
+    var d=el('div');d.appendChild(el('span','lab',r[0]));d.appendChild(el('span',r[2]?'hi':'',r[1]));sp.appendChild(d);
+  });
+  i.appendChild(sp);
+  var b=el('a','btn','Read the post-mortem');b.href=BASE+c.slug;b.target='_blank';b.rel='noopener';b.style.alignSelf='flex-start';i.appendChild(b);
+  f.appendChild(i);sg.appendChild(f);
+});
+</script>
+</body>
+</html>
