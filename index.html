@@ -84,6 +84,12 @@ footer.wrap{padding-top:20px;padding-bottom:40px;border-top:1px solid var(--line
 .tbl th{font:500 12px/1.3 "Overpass Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mist)}
 .note{border-left:4px solid var(--chalk);background:var(--panel);padding:10px 14px;margin:14px 0}
 .work{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:24px}
+
+.split{display:grid;grid-template-columns:minmax(0,1fr);gap:24px 48px}
+.work.stack{grid-template-columns:minmax(0,1fr)}
+.split .side .fig{margin:8px 0 8px;padding:12px;overflow:hidden}
+.split .side .fig img{min-width:0;width:100%;max-width:560px;height:auto;margin:0 auto}
+@media (min-width:1000px){.split{grid-template-columns:minmax(0,1fr) minmax(0,480px);align-items:start}}
 </style>
 </head>
 <body>
@@ -129,14 +135,15 @@ footer.wrap{padding-top:20px;padding-bottom:40px;border-top:1px solid var(--line
 
   <section id="work" class="blk">
     <div class="head"><p class="lab" style="color:var(--ink)">Engineering work</p><p class="lab">Write-ups with diagrams</p></div>
-    <div class="work">
+    <div class="split"><div class="work stack">
       <article class="frame"><div class="in"><span class="lab">CI/CD / IaC</span><h3><a href="work/terraform-pipeline.html">Terraform delivery pipeline</a></h3><p class="sum">Plan on every pull request, gated apply on merge, a CI role that cannot grant itself access.</p><a class="btn" style="align-self:flex-start" href="work/terraform-pipeline.html">Read it</a></div></article>
       <article class="frame"><div class="in"><span class="lab">CI/CD / Platform</span><h3><a href="work/pipeline-foundations.html">Shared pipeline foundations</a></h3><p class="sum">Release-driven deploys, keyless cloud identity, branch protection and supply-chain controls.</p><a class="btn" style="align-self:flex-start" href="work/pipeline-foundations.html">Read it</a></div></article>
       <article class="frame"><div class="in"><span class="lab">Design / Kubernetes</span><h3><a href="work/kubernetes-gpu-platform.html">Kubernetes GPU platform</a></h3><p class="sum">My design for a multi-tenant GPU cloud with failover, on Kubernetes, Slurm and Armada.</p><a class="btn" style="align-self:flex-start" href="work/kubernetes-gpu-platform.html">Read it</a></div></article>
     </div>
-    <p class="lab" style="margin-top:12px">How I design a system</p>
-    <div class="fig"><img src="img/layers.svg" alt="Four layers: data, compute, ingress, delivery, on a foundation of accounts, network and identity" style="min-width:560px"></div>
+    <aside class="side"><p class="lab" style="margin-top:0">How I design a system</p>
+    <div class="fig"><img src="img/layers.png" alt="Four layers: data, compute, ingress, delivery, on a foundation of accounts, network and identity"></div>
     <p class="lab">Data first, because it is the hardest layer to change.</p>
+  </aside></div>
   </section>
 
   <section id="how" class="blk">
