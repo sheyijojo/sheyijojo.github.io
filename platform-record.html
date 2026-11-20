@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Platform Work Record</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap">
+<style>
+:root{--bg:#0a0a0a;--fg:#f4f4f2;--muted:#9d9d98;--line:#2b2b29;--card:#111110;
+--display:'Instrument Serif','Times New Roman',serif;--body:'Schibsted Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.65;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit}.wrap{max-width:860px;margin:0 auto}
+.bar{display:flex;justify-content:space-between;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);font-size:15px;flex-wrap:wrap}
+.bar a{text-decoration:none;color:var(--muted)}.bar a:hover{color:var(--fg)}
+.eyebrow{color:var(--muted);font-size:15px;margin:56px 0 8px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(48px,9vw,92px);line-height:1;letter-spacing:-.02em;margin:0 0 20px;text-wrap:balance}
+.lede{font-size:19px;max-width:62ch;color:#d6d6d2}
+.toc{display:flex;flex-wrap:wrap;gap:8px 18px;margin:28px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:15px}
+.toc a{color:var(--muted);text-decoration:none}.toc a:hover{color:var(--fg)}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(30px,5vw,42px);margin:72px 0 16px;letter-spacing:-.01em;scroll-margin-top:16px}
+h3{font-family:var(--display);font-weight:400;font-size:26px;margin:40px 0 10px}
+p{margin:0 0 16px;max-width:70ch}
+.tw{overflow-x:auto;margin:20px 0}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15.5px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:500;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+td:first-child{white-space:nowrap;font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin:28px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+.stat b{display:block;font-family:var(--display);font-weight:400;font-size:46px;line-height:1}
+.stat span{color:var(--muted);font-size:14.5px}
+figure{margin:28px 0}
+figure .img{background:#fff;border-radius:10px;padding:10px;overflow-x:auto}
+figure img{display:block;width:100%;min-width:560px;height:auto}
+figcaption{color:var(--muted);font-size:15px;margin-top:10px;max-width:70ch}
+ul{padding-left:20px;max-width:70ch}li{margin:0 0 8px}
+.foot{margin:72px 0 64px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:14.5px}
+</style></head><body><div class="wrap">
+<div class="bar"><a href="index.html">&larr; John Gaji</a><span style="color:var(--muted)">Platform and DevOps engineering</span></div>
+
+<p class="eyebrow">Platform and DevOps engineering · work record</p>
+<h1>Platform Work Record</h1>
+<p class="lede">What my job covers, and a worked example: building a hardened production environment for a customer-facing API on AWS, phase by phase, entirely as code. Identifiers, account numbers, hostnames, names and secrets are left out.</p>
+<nav class="toc"><a href="#role">The role</a><a href="#project">The project</a><a href="#arch">Architecture</a><a href="#phases">Phases</a><a href="#decisions">Decisions</a><a href="#security">Access and deploys</a><a href="#problems">Problems solved</a><a href="#ways">How I work</a><a href="#next">Open items</a><a href="#done">Completed</a><a href="#followon">Follow-on</a></nav>
+
+<h2 id="role">The role</h2>
+<p>I own the cloud infrastructure for a legal-services company, across several AWS accounts (development, production, a management account, and smaller workload accounts). Everything I change goes through code, review and a pipeline. The work falls into four kinds.</p>
+<div class="tw"><table><thead><tr><th>Kind of work</th><th>What it looks like</th></tr></thead><tbody>
+<tr><td>Bring existing cloud into code</td><td>Imported the development, production and management accounts into Terraform network by network (5, 4 and 7 VPCs), so nothing is managed by hand. Also imported a security workloads account, including its VPN.</td></tr>
+<tr><td>Build new environments</td><td>Designed and built new services from scratch, copying what worked in development and hardening it for production.</td></tr>
+<tr><td>Migrate and retire</td><td>Moved an eight-stack pipeline to the CDK. Decommissioned a retired storage stack and cleaned up what it left behind.</td></tr>
+<tr><td>Standards and access</td><td>Least-privilege roles for the pipelines themselves, identity pools and groups for applications, ticket hygiene, and written plans for each project.</td></tr>
+</tbody></table></div>
+
+<h2 id="project">The worked example: a production API environment</h2>
+<p>A customer-facing API that handles sensitive personal data ran in the management account, with gaps: no TLS to the load balancer, no web firewall, fixed capacity, secrets baked into the image, and nothing under Terraform. I built a replacement in the production account, ready and idle, so moving traffic later is a separate and low-risk project.</p>
+<div class="stats">
+<div class="stat"><b>80+</b><span>resources created, all through reviewed changes</span></div>
+<div class="stat"><b>5</b><span>phases applied: access, network, platform, service, edge</span></div>
+<div class="stat"><b>2</b><span>availability zones, each with its own NAT gateway</span></div>
+<div class="stat"><b>27</b><span>resources removed when I retired the old storage stack</span></div>
+</div>
+
+<h2 id="arch">Architecture</h2>
+<p>The only public path is a CDN with a web firewall. It reaches an internal load balancer through a private origin, so the load balancer has no public address. Tasks run in private subnets and reach AWS services through private endpoints.</p>
+<figure><div class="img"><img src="img/request-path.png" alt="Request path: client, Route 53, CloudFront, internal load balancer, ECS on Fargate, with ACM, WAF, VPC endpoints, managed database, KMS, NAT gateways and CloudWatch Logs"></div>
+<figcaption>Request path and dependencies of the new environment. Nothing reaches the load balancer except through the CDN, and database traffic never leaves AWS.</figcaption></figure>
+<p>One design assumption could not be read from the docs: that the CDN reaches the internal load balancer without any DNS record for the origin. I tested it. The load balancer answered through the CDN, so the extra record, and its exposure, were never needed.</p>
+
+<h2 id="phases">Delivery in phases</h2>
+<p>Each phase was one small pull request with its own rollback. I checked the apply log after every merge, so a failure showed up in minutes, not later.</p>
+<figure><div class="img"><img src="img/build-phases.png" alt="Eight build phases from access to verification, with the status of each"></div>
+<figcaption>The build order. Later phases depend on earlier ones, so a failure stays small and easy to reverse.</figcaption></figure>
+<div class="tw"><table><thead><tr><th>Phase</th><th>What I built</th><th>State</th></tr></thead><tbody>
+<tr><td>0 Access</td><td>Scoped permissions for the pipeline, limited to this project's resource names</td><td>applied</td></tr>
+<tr><td>1 Network</td><td>Dedicated network, two NAT gateways, gateway and interface endpoints</td><td>applied</td></tr>
+<tr><td>2 Platform</td><td>Image registry, cluster, three encryption keys, task roles, security groups, flow logs</td><td>applied</td></tr>
+<tr><td>3 Service</td><td>Certificate, internal load balancer, task definition, service, alarms and a notification topic</td><td>applied</td></tr>
+<tr><td>4 Edge</td><td>CDN with a private origin, web firewall in count mode, public certificate, DNS alias</td><td>applied</td></tr>
+<tr><td>5 Deploy</td><td>Deploy role and protected environment; manual deploy workflow</td><td>first image pending</td></tr>
+<tr><td>6 Database</td><td>Private link to the database, accepted on both sides; secret created by hand</td><td>applied</td></tr>
+<tr><td>7 Verify</td><td>Failure drills, firewall enforcement, alarm routing, log shipping to the SIEM</td><td>open</td></tr>
+</tbody></table></div>
+
+<h2 id="decisions">Decisions I made, and why</h2>
+<div class="tw"><table><thead><tr><th>Decision</th><th>Reasoning</th></tr></thead><tbody>
+<tr><td>Right-sized the network</td><td>The first proposal reserved about 2,000 addresses. I cut it to a /23 (512), since subnets can grow later by adding a second range. Smaller means cheaper to plan around.</td></tr>
+<tr><td>One NAT gateway per zone</td><td>The development environment had one and called it a single point of failure. Production gets one per zone, and each private subnet uses its own.</td></tr>
+<tr><td>Private endpoints for AWS services</td><td>Image pulls, logs, secrets, keys and tokens stay off the NAT. That cuts per-GB cost and keeps those calls private.</td></tr>
+<tr><td>Its own encryption keys</td><td>The production service gets its own field-encryption key instead of depending on a key in another account. One re-wrap step remains for the cutover project.</td></tr>
+<tr><td>No cost center tag</td><td>None exists, so I left it out instead of inventing one, and flagged the tags that must be activated for cost reports.</td></tr>
+<tr><td>Firewall in count mode first</td><td>Watch real traffic, then enforce. Blocking on day one risks blocking legitimate users.</td></tr>
+<tr><td>Deploys never share a trigger with live</td><td>See the access section: I found that one release would also have deployed to live production and separated them.</td></tr>
+</tbody></table></div>
+
+<h2 id="security">Access and deploys</h2>
+<p>The pipeline is held to the same least-privilege standard as the workload. The deploy role can be assumed only by a job in one protected environment, which needs a named reviewer, and only from a version tag.</p>
+<figure><div class="img"><img src="img/deploy-role.png" alt="Deploy access: manual run on a tag, protected environment, STS token, deploy role, then ECR, task definition and one ECS service, with no access to anything else"></div>
+<figcaption>What the deploy role can and cannot do. There are no stored cloud keys: the job exchanges a signed token for a short-lived session.</figcaption></figure>
+<h3>The deploy trigger, before and after</h3>
+<figure><div class="img" style="max-width:420px"><img style="min-width:0" src="img/deploy-trigger.png" alt="Before, publishing a full release deployed to live production and the new environment. After, a release deploys only live production and a manual run on a tag deploys only the new environment"></div></figure>
+<p>I noticed that publishing a release to ship the new environment would also have redeployed live production. I moved the new path to its own manual workflow, so the two cannot be triggered together by accident.</p>
+
+<h2 id="problems">Problems found and solved</h2>
+<div class="tw"><table><thead><tr><th>What went wrong</th><th>What I did</th></tr></thead><tbody>
+<tr><td>Permissions granted to the pipeline's own role cannot apply through the pipeline</td><td>Apply those grants by hand, with a targeted apply, before merging the change that needs them. Two phases partly failed when the order slipped; both recovered cleanly.</td></tr>
+<tr><td>A permissions policy was over the size cap</td><td>Split it into two managed policies and kept names pinned to the project.</td></tr>
+<tr><td>Tagging some resources needed permissions the pipeline lacked</td><td>Left security-group rules untagged, and added the one missing tag permission for CDN origins.</td></tr>
+<tr><td>Retiring a stack stalled on a main route table that cannot be deleted on its own</td><td>Removed the dependents first, dropped it from state, then re-applied, verifying after each step.</td></tr>
+<tr><td>A DNS validation record was entered with a doubled name</td><td>Corrected it and removed the stray record. Learned that expired validation records break certificate renewal.</td></tr>
+<tr><td>A hosted zone that predated the project could have been shadowed by a delegation</td><td>Did not delegate it. Used an alias record instead and listed the old zone for cleanup.</td></tr>
+<tr><td>A merge conflict in the plan document</td><td>Traced it to timing, not content, then replaced the stale branch with a fresh change from the main branch.</td></tr>
+</tbody></table></div>
+
+<h2 id="ways">How I work</h2>
+<ul>
+<li><b>Everything as code.</b> One root per account, a pipeline that plans on a pull request and applies on merge, and no console changes.</li>
+<li><b>One reviewed change per phase,</b> each with a stated rollback, and the apply log read after every merge.</li>
+<li><b>Check before changing.</b> I read the target's current state, and where the account's real state differed from the plan, I changed the plan.</li>
+<li><b>Test through the real path.</b> I sent a request through the public edge to prove the private connection worked, instead of trusting the design.</li>
+<li><b>Secrets never in code or chat.</b> Containers are made by Terraform and the values are set by hand. I checked a secret's key names without printing its values.</li>
+<li><b>Keep the record current.</b> The plan document and the architecture page are updated to match what is built, with decisions and open items written down.</li>
+</ul>
+
+<h2 id="next">Open items</h2>
+<ul>
+<li>Push the first image through the manual deploy, then add autoscaling so the service comes up across both zones.</li>
+<li>Move the web firewall from count mode to enforcement after watching real traffic.</li>
+<li>Subscribe the monitoring and paging tools to the alarm topic, and ship the firewall, load balancer and flow logs to the SIEM.</li>
+<li>Cutover project: re-wrap the existing data key, then move traffic from the management account.</li>
+</ul>
+
+<h2 id="done">The production API environment: completed (November)</h2>
+<p>The sections above describe the build as it stood part-way through. This section is the completion record. The environment is now finished: the service runs two tasks across both zones, serves traffic through the CDN, the firewall enforces, and a normal release deploys to it. It still takes no live traffic, by design. What remains is verification and the cutover project.</p>
+<div class="stats">
+<div class="stat"><b>6</b><span>task-definition revisions rolled out, from first image to a normal release</span></div>
+<div class="stat"><b>2 to 4</b><span>tasks, scaling on CPU at 60%</span></div>
+<div class="stat"><b>9 to 3</b><span>minutes for the pipeline to report a stable deploy (about 9m15s to 3m05s)</span></div>
+<div class="stat"><b>~168k</b><span>lines of duplicated code removed from the application repository</span></div>
+</div>
+<h3>1. A release now deploys here, with an approval gate</h3>
+<p>Earlier I had separated the new environment from live production with a manual workflow. Once live deploys were retired, I let a published release drive the new environment too, keeping the same guard: a named reviewer approves each job, and only version tags may deploy. Pre-releases stay on the development path and never reach production.</p>
+<figure><div class="img"><img src="img/release-routing.png" alt="Release routing: full release or manual run on a tag, tag check, reviewer approval, build and push one image, second approval, update the service, rollout watches the alarm; pre-release reaches development only"></div>
+<figcaption>Which events reach which environment. A full release or a manual run on a tag goes to production, behind two approvals. A pre-release only touches development.</figcaption></figure>
+<h3>2. Safer rollouts, and honest reporting of them</h3>
+<p>The service rolls out with a circuit breaker and an alarm-based rollback: if the load balancer starts returning server errors, ECS reverts to the previous revision on its own. That alarm window made the pipeline wait about nine minutes after a deploy that was already healthy. I changed the pipeline step to report as soon as the new revision is the only one serving and the running count matches, which cut the wait to about three minutes, and the alarm keeps watching afterwards.</p>
+<figure><div class="img"><img src="img/rollout-rollback.png" alt="Rollout: new revision starts, health checks, traffic shifts, pipeline reports stable, alarm can still roll back"></div>
+<figcaption>The pipeline no longer waits for the full alarm window to say the deploy is stable. The protection is unchanged: the alarm can still undo the rollout after the pipeline has reported.</figcaption></figure>
+<h3>3. Hardening the running service</h3>
+<ul>
+<li><b>Public API documentation closed.</b> The interactive docs and schema were readable by anyone who found the address. I added a setting that switches them off, set it in the production task definition, and covered it with a unit test. The public address now refuses those paths.</li>
+<li><b>Firewall moved from count to enforce.</b> I mirrored the development configuration, then proved it by sending a request with a known-bad header: it was blocked. The rate-limit rule is configured but its test is still to do.</li>
+<li><b>Autoscaling.</b> Minimum two tasks (one per zone), maximum four, target CPU 60%, scale out after one minute and in after five.</li>
+<li><b>Container runs as a non-root user</b> with a read-only root filesystem and a small writable volume for temporary files.</li>
+</ul>
+<h3>4. One lineage of application code</h3>
+<p>The repository carried two copies of the service: the one built for development and a separate older copy that built production. They had drifted: different ports, different settings, routes in one that the other did not have. Production now builds from the same source as development, with one Dockerfile whose settings come from the environment, so the only difference between environments is configuration.</p>
+<figure><div class="img" style="max-width:560px"><img style="min-width:0" src="img/one-lineage.png" alt="Before: two sources built two images. After: one source, one image per release, with development and production configuration"></div>
+<figcaption>Two code lines that had to be kept in step became one. What differs between environments is configuration, not code.</figcaption></figure>
+<p>I split this into separate, reviewable changes: rename the build stage to say what it is, delete the workflow that auto-updated pull requests, and then delete the duplicate copy with every workflow, build target, dependency-bot entry and document that pointed at it. Six dependency-bot pull requests aimed at the deleted copy were closed, and the bot's failing run, caused by a private workflow repository it could not read, was fixed by ignoring that one dependency.</p>
+<h3>Decisions</h3>
+<div class="tw"><table><thead><tr><th>Decision</th><th>Reasoning</th></tr></thead><tbody>
+<tr><td>Retire the live deploy path before cutover</td><td>Keeping the old copy alive only to hotfix the old service meant maintaining two code lines. I flagged the consequence plainly: the old service keeps running its current image but cannot be redeployed from the repository until cutover. A hotfix path from the single source remains available if it is ever needed.</td></tr>
+<tr><td>Release drives deploy, behind approval</td><td>Engineers already ship by publishing a release. Tying the new environment to that, with a reviewer gate, is the habit-compatible and auditable choice.</td></tr>
+<tr><td>Report stable early, keep the alarm</td><td>Waiting for the alarm window is pure latency; the rollback protection does not depend on the pipeline waiting.</td></tr>
+<tr><td>Keep the old environment's secrets until cutover</td><td>They are the only record of the live service's names and cannot be read back once deleted. They go in one cleanup after cutover.</td></tr>
+</tbody></table></div>
+<h3>Problems found and solved</h3>
+<div class="tw"><table><thead><tr><th>What went wrong</th><th>What I did</th></tr></thead><tbody>
+<tr><td>The first manual deploy failed its own tag check</td><td>That was the guard working: it ran from the main branch. I re-ran it from a tag. The guard stays.</td></tr>
+<tr><td>A release tag was pushed to the wrong repository because the shell's working folder had reset</td><td>Deleted the remote and local tag straight away, before any workflow could use it, then re-ran from the right folder with a command that checks the remote.</td></tr>
+<tr><td>The disabled docs returned 405 instead of the expected 404</td><td>A catch-all route for preflight requests answers first. Same effect for a caller, so I fixed the code comment to say so, not the behaviour.</td></tr>
+<tr><td>Local tests showed 162 errors</td><td>All came from a bundled binary built for the wrong CPU type on my laptop. The other 7,065 passed, and CI is the source of truth. Not a code fault.</td></tr>
+<tr><td>A change to the repository's own docs reached the plan after it had already merged</td><td>Same pattern as before: replaced the stale branch with a fresh change from the main branch instead of merging around it.</td></tr>
+</tbody></table></div>
+<h3>State and what is left</h3>
+<div class="tw"><table><thead><tr><th>Item</th><th>State</th></tr></thead><tbody>
+<tr><td>Network, platform, service, edge, database link, deploy role</td><td>done</td></tr>
+<tr><td>Autoscaling, firewall enforcing, docs closed, release deploy</td><td>done</td></tr>
+<tr><td>Authenticated request that reads the database</td><td>to confirm</td></tr>
+<tr><td>Failure drills, rate-limit test, alarm delivery</td><td>to confirm</td></tr>
+<tr><td>Alarm subscriptions, SIEM log shipping, cost-allocation tags</td><td>open</td></tr>
+<tr><td>Cutover: re-wrap the data key, move traffic, remove the old secrets and environment</td><td>separate project</td></tr>
+</tbody></table></div>
+
+<h2 id="followon">Follow-on: image security and a faster pipeline (November)</h2>
+<p>After the environment was finished, I spent a day on the two things that would otherwise keep costing the team time: a container image full of scanner findings, and a build pipeline that made every change wait several minutes. I also proved the new release path end to end: a normal release was published, a reviewer approved it, and the service rolled to the new image, healthy, with no manual step.</p>
+<div class="stats">
+<div class="stat"><b>265</b><span>critical and high scanner findings on the old image, only 10 of them fixable</span></div>
+<div class="stat"><b>~25%</b><span>faster tests from running them in parallel (about 3m53s to 2m59s)</span></div>
+<div class="stat"><b>9 to 3</b><span>minutes for a dev deploy to report, same fix as production</span></div>
+<div class="stat"><b>8 to 0.5</b><span>minutes for a pipeline-only change to pass its required check (estimate)</span></div>
+</div>
+<h3>1. Fewer vulnerabilities by shipping less</h3>
+<p>The scanner's first report listed over a hundred findings. I traced where they came from instead of chasing each one. Most were not in the application at all: the runtime image still carried compilers, development headers, a version-control tool and a language toolchain that were only needed to build the Python packages. One bundled Java library inside the PDF tool accounted for the critical ones, and the code paths it flags (certificate, messaging and key-file parsing) are never reached, because the service only fills fixed templates.</p>
+<figure><div class="img"><img src="img/slim-image.png" alt="Before: one stage carried build tools into the deployed image. After: a build stage and a slim runtime stage, with finished packages only copied across"></div>
+<figcaption>The deployed image now contains the running service and the libraries it loads, and nothing used only to build it. Findings that came from build tooling disappear with the tooling.</figcaption></figure>
+<p>The change built and passed the full test suite in CI, then I deployed it to development for the developers to test before anything reaches production. It stays unmerged until they confirm it.</p>
+<h3>2. Scanning that does not depend on someone remembering</h3>
+<p>Nothing in the repository scanned the image; the only scan ran after a push to the registry. I designed three layers and built the first two as one reviewable change.</p>
+<figure><div class="img"><img src="img/scan-layers.png" alt="Scan layers: pull request, weekly rebuild and dated exceptions feed a scan of the built image; only fixable critical or high findings fail the check; a registry scan with an alert topic is the third layer, later"></div>
+<figcaption>Only a finding that has a fix can fail the check, so the pipeline never blocks on something nobody can fix. Accepted risks live in a file with a written reason and an expiry date, after which they fail again.</figcaption></figure>
+<ul>
+<li><b>Report-only first.</b> The old image is too noisy to enforce on; turning enforcement on is a repository setting, not another change.</li>
+<li><b>Weekly rebuild without cache,</b> because most fixes arrive as base-image patches and a repository nobody edits goes stale.</li>
+<li><b>Kept out of the required check,</b> so a scanner problem cannot block merging.</li>
+<li>I checked what the scanner step actually spends its time on and found the first run of a day downloads its vulnerability database; later runs restore it from cache.</li>
+</ul>
+<h3>3. A faster pipeline, aimed by measurement</h3>
+<div class="tw"><table><thead><tr><th>Change</th><th>What I found</th><th>Result</th></tr></thead><tbody>
+<tr><td>Skip the image build and tests when nothing under the application changed</td><td>A required check ran an eight-minute build for pipeline-only and doc-only changes, which cannot affect the image. A required check that does not run blocks the merge, so I kept the job and skipped only its steps.</td><td>merged</td></tr>
+<tr><td>Report dev deploys when stable</td><td>The dev service watches an alarm during rollouts, so the pipeline waited for the whole alarm window after the service was healthy. Same fix already used for production.</td><td>merged</td></tr>
+<tr><td>Run tests in parallel</td><td>The first parallel run aborted: one parametrized test took its inputs from an unordered set, so workers collected different tests. I fixed the test, confirmed the serial and parallel runs gave identical results locally, then measured in CI: about 3m53s down to 2m59s. Modest, because the slowest tests are PDF fills that each start a Java process.</td><td>in review</td></tr>
+<tr><td>Next target, not started</td><td>The 25 slowest tests are all PDF fills of the same few forms. Reusing a filled PDF across tests that use the same input is the larger saving; it needs a test-by-test check that each still proves what it claims.</td><td>proposed</td></tr>
+</tbody></table></div>
+<h3>4. Housekeeping that prevents noise</h3>
+<ul>
+<li>Closed six dependency-bot pull requests aimed at the directory I had removed, and stopped the bot's weekly failure by ignoring a private workflow repository it cannot read.</li>
+<li>Explained why one release starts two workflows (the dev workflow runs and skips itself on a full release) so the next person is not alarmed by it.</li>
+<li>Listed the old environment's leftover secrets and decided to keep them until cutover, because they cannot be read back once deleted.</li>
+</ul>
+<h3>Decisions</h3>
+<div class="tw"><table><thead><tr><th>Decision</th><th>Reasoning</th></tr></thead><tbody>
+<tr><td>Remove packages before triaging findings</td><td>Ranking a hundred findings is slow and never finishes. Removing what should not be in the image clears most of them and shrinks the image too.</td></tr>
+<tr><td>Test on development before production</td><td>The image change touches how the service starts. A team test costs a day; a bad production image costs more.</td></tr>
+<tr><td>Measure before optimising</td><td>I read step timings and the slowest-test list before changing anything, and reported the modest gain as it was rather than as a win.</td></tr>
+<tr><td>Never block on the unfixable</td><td>A gate that fails on findings with no fix gets ignored. Gating only on fixable findings keeps it credible.</td></tr>
+</tbody></table></div>
+<h3>State and what is left</h3>
+<div class="tw"><table><thead><tr><th>Item</th><th>State</th></tr></thead><tbody>
+<tr><td>Release deploy proven end to end, dev and pipeline speed-ups</td><td>done</td></tr>
+<tr><td>Slim runtime image</td><td>with developers in dev</td></tr>
+<tr><td>Scan workflow and parallel tests</td><td>in review</td></tr>
+<tr><td>Turn on enforcement once a scan of the slim image is clean</td><td>after merge</td></tr>
+<tr><td>Bundled Java library, registry-scan alerts, reuse of filled PDFs in tests</td><td>next</td></tr>
+</tbody></table></div>
+<p class="foot">All identifiers, account numbers, hostnames, resource names, people and secrets were removed or generalised. Counts reflect work completed to date. Diagrams use AWS Architecture Icons.</p>
+</div></body></html>
